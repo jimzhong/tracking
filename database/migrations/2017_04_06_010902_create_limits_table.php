@@ -21,7 +21,7 @@ class CreateLimitsTable extends Migration
             $table->float('lat', 10, 6);
             $table->float('lng', 10, 6);
             $table->float('radius', 10, 2); // in meters
-            $table->float('max_speed', 10, 2)->nullable();    // speed limit in km/h
+            $table->float('max_speed', 6, 3)->nullable();    // speed limit in km/h
             $table->timestamps();
 
             $table->foreign('device_id')->references('id')->on('devices')->onDelete('cascade');
