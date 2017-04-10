@@ -17,7 +17,8 @@ class CreateLocationsTable extends Migration
             $table->increments('id');
             $table->float('lat', 10, 6);
             $table->float('lng', 10, 6);
-            $table->float('speed', 6, 3)->nullable();    // km/h
+            $table->float('speed')->nullable();
+            $table->float('heading')->nullable();
             $table->integer('battery')->nullable(); // 0-100
             $table->integer('device_id')->unsigned();
             $table->timestamp('sampled_at');
