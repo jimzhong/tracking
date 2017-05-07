@@ -2,8 +2,8 @@ CREATE TABLE devices
 (
   id INT PRIMARY KEY AUTO_INCREMENT,
   name CHAR(32) NOT NULL,
-  devaddr CHAR(10) NOT NULL,
-  secret VARCHAR(255),
+  devaddr CHAR(10) NOT NULL UNIQUE,
+  secret VARCHAR(255)
 ) CHARSET=utf8mb4;
 
 CREATE TABLE locations
