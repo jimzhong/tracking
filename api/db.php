@@ -13,4 +13,4 @@ $opt = [
 ];
 $pdo = new PDO($dsn, $user, $pass, $opt);
 
-date_default_timezone_set ('Asia/Shanghai');
+// date_default_timezone_set ('UTC');

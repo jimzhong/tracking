@@ -16,8 +16,8 @@ function insert_location($device_id, $data)
         $sample_time->sub($interval);
     }
 
-    $stmt = $pdo->prepare('INSERT INTO locations (device_id, lat, lon, speed, heading, battery, sampled_at)
-        VALUES (:device_id, :lat, :lon, :speed, :heading, :battery, :sampled_at)');
+    $stmt = $pdo->prepare('INSERT INTO locations (device_id, lat, lon, speed, heading, battery, sampled_at, created_at)
+        VALUES (:device_id, :lat, :lon, :speed, :heading, :battery, :sampled_at, :created_at)');
 
 
     $stmt->execute([
@@ -28,6 +28,7 @@ function insert_location($device_id, $data)
         'heading' => $data['heading'],
         'battery' => $data['battery'],
         'sampled_at' => $sample_time->format('Y-m-d H:i:s'),
+        'created_at' => date('Y-m-d H:i:s'),
     ]);
     return $pdo->lastInsertId();
 }

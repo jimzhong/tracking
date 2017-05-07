@@ -7,7 +7,6 @@ require_once "alert.inc.php";
 
 function convert_units($data)
 {
-    var_dump($data);
     $data['lat'] *= 1e-7;
     $data['lon'] *= 1e-7;
     $data['speed'] *= 1e-3 * 3.6;
@@ -23,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['data']) && !empty($_P
     {
         die("Error decoding");
     }
-    $data = unpack('Chour/Cmin/Csec/Cfixtype/llon/llat/lheight/lspeed/lheading/Cflags/Cbattery', $binary_data);
+    $data = unpack('Chour/Cmin/Csec/Cfixtype/llon/llat/lheight/lspeed/lheading/Cflags/Cbattery/CnumSV', $binary_data);
 
     $data = convert_units($data);
 

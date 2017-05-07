@@ -18,10 +18,11 @@ if (!empty($_GET['device_id']) && !empty($_GET['start']) && !empty($_GET['end'])
 
 <head>
     <title> 历史轨迹 </title>
-    <link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="static/jquery.datetimepicker.min.css">
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script src="static/jquery.datetimepicker.full.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/jquery.datetimepicker.min.css">
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/jquery.min.js"></script>
+    <script src="/static/convert.js"></script>
+    <script src="/static/jquery.datetimepicker.full.min.js"></script>
     <script src="https://webapi.amap.com/maps?v=1.3&key=bbbf7cd7130e7699860c374dd91e8855"></script>
 
     <style>
@@ -93,7 +94,8 @@ if (!empty($_GET['device_id']) && !empty($_GET['start']) && !empty($_GET['end'])
                 //     map: map,
                 //     title: loc[i].sampled_at
                 // });
-                path.push([loc[i].lon, loc[i].lat]);
+                corrected_loc = GPS.gcj_encrypt(loc[i].lat, loc[i].lon);
+                path.push([corrected_loc.lon, corrected_loc.lat]);
             }
             var line = new AMap.Polyline({
                 map: map,

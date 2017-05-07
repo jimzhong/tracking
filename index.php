@@ -2,8 +2,9 @@
 
 <head>
     <title> 概览 </title>
-    <link href="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <link href="/static/bootstrap.min.css" rel="stylesheet">
+    <script src="/static/jquery.min.js"></script>
+    <script src="/static/convert.js"></script>
     <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=bbbf7cd7130e7699860c374dd91e8855"></script>
 
     <style>
@@ -51,7 +52,8 @@
                     if(data.data)
                     {
                         var loc = data.data;
-                        draw_point(loc.lat, loc.lon, device.name, loc.sampled_at);
+                        var corrected_loc = GPS.gcj_encrypt(loc.lat, loc.lon);
+                        draw_point(corrected_loc.lat, corrected_loc.lon, device.name, loc.sampled_at);
                     }
                 })});
         })
