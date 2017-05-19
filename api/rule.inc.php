@@ -1,6 +1,7 @@
 <?php
 
 require_once "db.php";
+require_once "alert.inc.php";
 require_once "location.inc.php";
 
 function get_rules_by_device_id($device_id)
@@ -47,28 +48,24 @@ function distance($lat1, $lon1, $lat2, $lon2)
   return $dist * 60 * 1.1515 * 1609.344;
 }
 
-function get_matched_rules($device_id, $location, $tolerance = 200)
-{
-    $rules = get_rules_by_device_id($device_id);
-    $matched_rules = [];
-    foreach ($rules as $rule) {
-        if (distance($location['lat'], $location['lon'], $rule['lat'], $rule['lon']) < ($rule['radius'] + $tolerance))
-        {
-            $matched_rules[] = $rule;
-        }
-    }
-    return $matched_rules;
-}
-
-function check_location($device_id, $location_id)
+function check_location($location_id, $tolerance = 200)
 {
     $location = get_location_by_id($location_id);
-
-    if ($location)
+    $rules = get_rules_by_device_id($location.device_id);
+    if (count($rules) == 0)
     {
-        var_dump(get_matched_rules($device_id, $location));
+        // no rules
+        return;
     }
+    foreach ($rules as $rule)
+    {
+        if (distance($location['lat'], $location['lon'], $rule['lat'], $rule['lon']) < ($rule['radius'] + $tolerance))
+        {
+            return;
+        }
+    }
+    // no rules matched, generate an alert
+    insert_alert($device_id, $location_id, "超出行驶区域");
 }
-
 
  ?>

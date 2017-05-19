@@ -33,7 +33,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['data']) && !empty($_P
     if ($device)
     {
         $location_id = insert_location($device['id'], $data);
-        // check_location($location_id);
+        if ($data['flags'] == 1)
+        {
+            insert_alert($device.id, $location_id, "位移报警");
+        }
+        check_location($location_id);
     } else {
         echo "Device does not exist.";
     }

@@ -24,6 +24,7 @@ if (!empty($_GET['device_id']) && !empty($_GET['start']) && !empty($_GET['end'])
     <script src="/static/convert.js"></script>
     <script src="/static/jquery.datetimepicker.full.min.js"></script>
     <script src="https://webapi.amap.com/maps?v=1.3&key=bbbf7cd7130e7699860c374dd91e8855"></script>
+    <script src="https://webapi.amap.com/ui/1.0/main.js"></script>
 
     <style>
 
@@ -58,7 +59,7 @@ if (!empty($_GET['device_id']) && !empty($_GET['start']) && !empty($_GET['end'])
         </form>
 
         <?php if (isset($loc)): ?>
-            <h4 class="text-center"><?php echo $dev['name'] ?>在<?php echo $_GET['start'] ?>至<?php echo $_GET['end'] ?>的行驶轨迹</h4>
+            <h4 class="text-center" style="margin: 30px"><?php echo $dev['name'] ?>在<?php echo $_GET['start'] ?>至<?php echo $_GET['end'] ?>的行驶轨迹</h4>
         <?php endif ?>
 
         <div id="map_container" class="container" style="height:500px">
@@ -89,13 +90,14 @@ if (!empty($_GET['device_id']) && !empty($_GET['start']) && !empty($_GET['end'])
             for (var i = 0; i < loc.length; i++)
             {
                 // console.log(loc[i]);
-                // var marker = new AMap.Marker({
-                //     position: [loc[i].lon, loc[i].lat],
-                //     map: map,
-                //     title: loc[i].sampled_at
-                // });
                 corrected_loc = GPS.gcj_encrypt(loc[i].lat, loc[i].lon);
                 path.push([corrected_loc.lon, corrected_loc.lat]);
+                /*var marker = new AMap.Marker({
+                    position: [corrected_loc.lon, corrected_loc.lat],
+                    map: map,
+                    icon: "static/dot.png",
+                    title: loc[i].sampled_at
+                });*/
             }
             var line = new AMap.Polyline({
                 map: map,

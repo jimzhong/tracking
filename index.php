@@ -5,8 +5,9 @@
     <link href="/static/bootstrap.min.css" rel="stylesheet">
     <script src="/static/jquery.min.js"></script>
     <script src="/static/convert.js"></script>
+    <script src="/static/sprintf.js"></script>
     <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.3&key=bbbf7cd7130e7699860c374dd91e8855"></script>
-
+    <script src="https://webapi.amap.com/ui/1.0/main.js"></script>
     <style>
 
     </style>
@@ -35,13 +36,34 @@
 
         AMap.event.addDomListener(document.getElementById('setFitView'), 'click', function() {map.setFitView();});
 
-        function draw_point(lat, lon, label, desc)
+        AMapUI.setDomLibrary($);
+
+
+        function draw_point(lat, lon, title, body)
         {
-            marker = new AMap.Marker({
-                position: [lon, lat],
-                icon: "static/mark.png",
-                map: map,
-                title: label
+            AMapUI.loadUI(['overlay/SimpleInfoWindow'], function(SimpleInfoWindow) {
+
+                var marker = new AMap.Marker({
+                    position: [lon, lat],
+                    icon: "static/mark.png",
+                    map: map,
+                });
+
+                var infoWindow = new SimpleInfoWindow({
+                    infoTitle: title,
+                    infoBody: body,
+                    offset: new AMap.Pixel(0, -31)
+                });
+
+                function openInfoWindow() {
+                    infoWindow.open(map, marker.getPosition());
+                }
+
+                AMap.event.addListener(marker, 'click', function() {
+                    openInfoWindow();
+                });
+
+                openInfoWindow();
             });
         }
 
@@ -53,7 +75,8 @@
                     {
                         var loc = data.data;
                         var corrected_loc = GPS.gcj_encrypt(loc.lat, loc.lon);
-                        draw_point(corrected_loc.lat, corrected_loc.lon, device.name, loc.sampled_at);
+                        var body = sprintf("<ul><li>经度: %.6f</li><li>纬度: %.6f</li><li>定位时刻: %s</li><li>车速: %.2f km/h</li><li>航向: %.0f 度</li><li>电压: %.1f V</li></ul>", loc.lat, loc.lon, loc.sampled_at, loc.speed, loc.heading, loc.battery);
+                        draw_point(corrected_loc.lat, corrected_loc.lon, device.name, body);
                     }
                 })});
         })
