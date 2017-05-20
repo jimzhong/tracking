@@ -32,6 +32,8 @@ else
 
     <div class="container">
 
+        <?php include "navbar.php"; ?>
+
         <table class="table">
             <thead>
                 <tr><th>车辆名称</th><th>警报类型</th><th>时刻</th><th>经度</th><th>纬度</th><tr>
